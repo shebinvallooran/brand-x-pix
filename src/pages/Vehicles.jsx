@@ -5,6 +5,7 @@ import MicIcon from '../assets/svg/mic-icon.svg';
 import SlidersIcon from '../assets/svg/filter-icon.svg';
 import SearchBar from '../components/SearchBar';
 import FavouriteIcon from '../assets/svg/favourate-icon.svg';
+import { motion } from 'framer-motion';
 
 import cadillacCT4Sedan from '../assets/images/cadilac-images/cadilac-CT-4-sedan.png';
 import cadillacCT5Sedan from '../assets/images/cadilac-images/cadilac-CT-5-2026-sedan.png';
@@ -134,31 +135,50 @@ const Vehicles = () => {
             {/* Chips */}
             <div className="pl-5 pr-5 flex items-center gap-[10px] overflow-x-auto scrollbar-hide py-1 mb-[20px]">
                 {chips.map(chip => (
-                    <button
+                    <motion.button
                         key={chip}
-                        className={`px-[18px] py-[6px] rounded-[16px] border-none text-[13px] font-urbanist font-medium cursor-pointer whitespace-nowrap transition-all duration-300 flex-shrink-0 ${activeChip === chip ? 'bg-[#0d0d0d] text-white' : 'bg-white text-[#282828] shadow-[0_2px_8px_rgba(0,0,0,0.02)]'}`}
+                        whileTap={{ scale: 0.95 }}
+                        className={`px-[18px] py-[6px] rounded-[16px] border-none text-[13px] font-urbanist font-medium cursor-pointer whitespace-nowrap transition-colors duration-300 flex-shrink-0 relative overflow-hidden ${activeChip === chip ? 'bg-[#0d0d0d] text-white' : 'bg-white text-[#282828] shadow-[0_2px_8px_rgba(0,0,0,0.02)]'}`}
                         onClick={() => setActiveChip(chip)}
                     >
                         {activeChip === chip && (
                             <div className="absolute inset-0 bg-gradient-to-r from-[#131313] to-[#2a2a2a] -z-10" />
                         )}
                         <span className="relative z-10">{chip}</span>
-                    </button>
+                    </motion.button>
                 ))}
                 <div className="w-5 shrink-0"></div> {/* Scroll spacer */}
             </div>
 
             {/* Vehicles List */}
-            <div className="px-5 flex flex-col gap-[18px]">
+            <motion.div
+                className="px-5 flex flex-col gap-[18px]"
+                variants={{
+                    hidden: {},
+                    show: {
+                        transition: { staggerChildren: 0.1 }
+                    }
+                }}
+                initial="hidden"
+                animate="show"
+            >
                 {vehicles.map((vehicle, index) => (
-                    <div key={vehicle.id} className="w-full bg-white rounded-[24px] p-3 pt-4 relative flex flex-col justify-between shadow-[0_4px_16px_rgba(0,0,0,0.03)] opacity-0 animate-[fadeIn_0.5s_ease-out_forwards]" style={{ animationDelay: `${index * 0.1}s` }}>
+                    <motion.div
+                        key={vehicle.id}
+                        variants={{
+                            hidden: { opacity: 0, y: 30 },
+                            show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                        className="w-full bg-white rounded-[24px] p-3 pt-4 relative flex flex-col justify-between shadow-[0_4px_16px_rgba(0,0,0,0.03)] cursor-pointer"
+                    >
 
                         {/* Top Label & Heart */}
                         <div className="absolute top-[26px] left-[20px] right-[20px] flex justify-between items-start z-10">
                             <span className="font-urbanist font-medium text-[15px] text-[#282828] mt-1 tracking-tight">{vehicle.status}</span>
-                            <button className="bg-transparent border-none cursor-pointer p-0 transition-transform">
+                            <motion.button whileTap={{ scale: 0.8 }} className="bg-transparent border-none cursor-pointer p-0">
                                 <img src={FavouriteIcon} alt="Favourite" className="w-[24px] h-[24px]" />
-                            </button>
+                            </motion.button>
                         </div>
 
                         {/* Image Layer */}
@@ -174,9 +194,9 @@ const Vehicles = () => {
                             </div>
                             <p className="font-urbanist font-medium text-[13px] text-[#A0A0A0] m-0">{vehicle.type}</p>
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
-            </div>
+            </motion.div>
         </div>
     );
 };

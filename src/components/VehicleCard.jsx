@@ -1,10 +1,24 @@
 import React from 'react';
 import image81 from '../assets/image-81@3x.png';
 import frame52 from '../assets/Frame-52.svg';
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
+
+const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+};
 
 const VehicleCard = ({ image = image81, title = "2026 CT4 . Sport AWD", type = "Electric Sedan", price = "$72,500" }) => {
     return (
-        <div className={`w-full bg-white rounded-[20px] p-1.5 pb-1 relative flex flex-col justify-between h-[256px] border border-[#e8e8e8] shadow-[0px_5px_6px_rgba(0,0,0,0.05)]`}>
+        <motion.div
+            variants={cardVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            className={`w-full bg-white rounded-[20px] p-1.5 pb-1 relative flex flex-col justify-between h-[256px] border border-[#e8e8e8] shadow-[0px_5px_6px_rgba(0,0,0,0.05)]`}
+        >
 
             {/* Top right icon */}
             <div className="absolute top-3 right-3 z-10">
@@ -15,7 +29,11 @@ const VehicleCard = ({ image = image81, title = "2026 CT4 . Sport AWD", type = "
 
             {/* Image Container */}
             <div className="absolute inset-x-[5px] top-[5px] h-[196px] bg-[#f8f8fb] rounded-[16px] overflow-hidden flex justify-center items-center">
-                <img src={image} alt={title} className="w-[325px] h-[183px] object-contain drop-shadow-md" />
+                <motion.img
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    src={image} alt={title} className="w-[325px] h-[183px] object-contain drop-shadow-md"
+                />
             </div>
 
             {/* Bottom Info Card - Positioned absolute to overlap the bottom correctly */}
@@ -26,7 +44,7 @@ const VehicleCard = ({ image = image81, title = "2026 CT4 . Sport AWD", type = "
                 </div>
                 <p className="font-urbanist font-bold text-[18px] text-[#282828] m-0">{price}</p>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

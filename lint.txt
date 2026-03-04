@@ -1,0 +1,18 @@
+﻿
+C:\Ecogo\test-app-project\src\App.jsx
+  16:27  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Ecogo\test-app-project\src\components\BottomNav.jsx
+  3:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Ecogo\test-app-project\src\components\CategoryTabs.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Ecogo\test-app-project\src\components\VehicleCard.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Ecogo\test-app-project\src\pages\Login.jsx
+  4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+Γ£û 5 problems (5 errors, 0 warnings)
+

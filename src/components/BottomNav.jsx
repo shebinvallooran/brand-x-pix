@@ -1,5 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
 import HomeIcon from '../assets/svg/home-icon.svg';
 import VehiclesIcon from '../assets/svg/car-icon.svg';
 import DigitalIdIcon from '../assets/svg/qr-icon.svg';
@@ -28,10 +30,11 @@ const BottomNav = () => {
                     const isActive = currentPath.startsWith(item.path);
 
                     return (
-                        <button
+                        <motion.button
                             key={item.label}
+                            whileTap={{ scale: 0.9 }}
                             onClick={() => navigate(`${item.path}${location.search}`)}
-                            className="flex flex-col items-center justify-center gap-[4px] w-[56px] bg-transparent cursor-pointer transition-all duration-300 flex-shrink-0"
+                            className="flex flex-col items-center justify-center gap-[4px] w-[56px] bg-transparent cursor-pointer transition-all duration-300 flex-shrink-0 border-none outline-none"
                         >
                             <img
                                 src={item.icon}
@@ -43,7 +46,7 @@ const BottomNav = () => {
                             >
                                 {item.label}
                             </span>
-                        </button>
+                        </motion.button>
                     );
                 })}
             </div>

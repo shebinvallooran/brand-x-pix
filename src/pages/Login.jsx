@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
 
 import EmailIcon from '../assets/svg/email-icon.svg';
 import LockIcon from '../assets/svg/lock-icon.svg';
@@ -14,33 +16,71 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleLogin = () => {
+        if (email === 'shebinvallooran@gmail.com' && password === '12345612') {
+            setError('');
+            localStorage.setItem('isAuthenticated', 'true');
+            navigate('/home');
+        } else {
+            setError('Email and password incorrect');
+        }
+    };
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.08,
+                delayChildren: 1.8
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 15 },
+        visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+    };
 
     return (
-        <div className="w-full flex flex-col px-6 pt-[50px] pb-10 flex-1 min-h-[100dvh]">
+        <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="w-full flex flex-col px-6 pt-[50px] pb-10 flex-1 min-h-[100dvh]"
+        >
             {/* Top Header */}
-            <div className="flex justify-between items-center w-full mb-12">
+            <motion.div variants={itemVariants} className="flex justify-between items-center w-full mb-12">
                 <button
                     onClick={() => navigate('/home')}
-                    className="w-10 h-10 flex items-center justify-start p-0 bg-transparent border-none cursor-pointer"
+                    className="w-10 h-10 flex items-center justify-start p-0 bg-transparent border-none cursor-pointer hover:bg-black/5 rounded-full transition-colors"
                 >
                     <ArrowLeft strokeWidth={1.5} className="w-6 h-6 text-[#131313]" />
                 </button>
                 {/* Brand Logo - placeholder using a stylised script font representation */}
                 <div className="font-['Brush_Script_MT',cursive] italic text-[28px] font-semibold text-[#131313] tracking-tight mr-2">Brandx</div>
-            </div>
+            </motion.div>
 
             {/* Welcome Setup */}
-            <div className="flex flex-col mb-8 mt-2">
+            <motion.div variants={itemVariants} className="flex flex-col mb-8 mt-2">
                 <h1 className="font-urbanist text-[34px] font-semibold text-[#131313] tracking-tight m-0 mb-1">Welcome Back</h1>
                 <p className="font-urbanist text-[15px] font-medium text-[#8F8F8F] m-0">Your drive. Your control. All in one place.</p>
-            </div>
+            </motion.div>
 
             {/* Form area */}
-            <div className="flex flex-col flex-1 gap-5">
+            <motion.div variants={itemVariants} className="flex flex-col flex-1 gap-5">
+                {error && (
+                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="bg-red-50 text-red-500 text-[14px] font-urbanist font-medium p-3 rounded-[12px] border border-red-100 text-center">
+                        {error}
+                    </motion.div>
+                )}
+
                 {/* Email Field */}
                 <div className="flex flex-col gap-2">
                     <label className="font-urbanist text-[15px] font-medium text-[#131313]">Email or Mobile Number</label>
-                    <div className="flex items-center bg-white rounded-[24px] px-4 py-[15px] shadow-[0_2px_12px_rgba(0,0,0,0.02)] border border-transparent focus-within:border-[#e0e0e0] transition-colors">
+                    <div className={`flex items-center bg-white rounded-[24px] px-4 py-[15px] shadow-[0_2px_12px_rgba(0,0,0,0.02)] border ${error ? 'border-red-300' : 'border-transparent focus-within:border-[#e0e0e0]'} transition-colors`}>
                         <img src={EmailIcon} alt="Email" className="w-[22px] h-[22px] mr-3 opacity-60" />
                         <input
                             type="text"
@@ -55,7 +95,7 @@ const Login = () => {
                 {/* Password Field */}
                 <div className="flex flex-col gap-2">
                     <label className="font-urbanist text-[15px] font-medium text-[#131313]">Password</label>
-                    <div className="flex items-center bg-white rounded-[24px] px-4 py-[15px] shadow-[0_2px_12px_rgba(0,0,0,0.02)] border border-transparent focus-within:border-[#e0e0e0] transition-colors">
+                    <div className={`flex items-center bg-white rounded-[24px] px-4 py-[15px] shadow-[0_2px_12px_rgba(0,0,0,0.02)] border ${error ? 'border-red-300' : 'border-transparent focus-within:border-[#e0e0e0]'} transition-colors`}>
                         <img src={LockIcon} alt="Lock" className="w-[22px] h-[22px] mr-3 opacity-60" />
                         <input
                             type={showPassword ? "text" : "password"}
@@ -98,12 +138,14 @@ const Login = () => {
                 </div>
 
                 {/* Login Button */}
-                <button
-                    className="w-full bg-[#0d0d0d] hover:bg-[#1f1f1f] text-white font-urbanist text-[16px] font-semibold py-[18px] rounded-[100px] shadow-[0_4px_14px_rgba(0,0,0,0.15)] transition-all active:scale-[0.98] mt-2 border-none cursor-pointer"
-                    onClick={() => navigate('/home')}
+                <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full bg-[#0d0d0d] text-white font-urbanist text-[16px] font-semibold py-[18px] rounded-[100px] shadow-[0_4px_14px_rgba(0,0,0,0.15)] transition-shadow mt-2 border-none cursor-pointer"
+                    onClick={handleLogin}
                 >
                     Log In
-                </button>
+                </motion.button>
 
                 {/* Divider */}
                 <div className="w-full mt-4 flex items-center justify-center gap-4 px-2">
@@ -114,24 +156,24 @@ const Login = () => {
 
                 {/* Social Buttons */}
                 <div className="flex justify-center items-center gap-6 mt-4">
-                    <button className="w-[52px] h-[52px] rounded-full bg-white flex items-center justify-center shadow-[0_2px_12px_rgba(0,0,0,0.04)] border-none cursor-pointer hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-all active:scale-[0.96]">
+                    <motion.button whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }} className="w-[52px] h-[52px] rounded-full bg-white flex items-center justify-center shadow-[0_2px_12px_rgba(0,0,0,0.04)] border-none cursor-pointer">
                         <img src={AppleIcon} alt="Apple login" className="w-6 h-6" />
-                    </button>
-                    <button className="w-[52px] h-[52px] rounded-full bg-white flex items-center justify-center shadow-[0_2px_12px_rgba(0,0,0,0.04)] border-none cursor-pointer hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-all active:scale-[0.96]">
+                    </motion.button>
+                    <motion.button whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }} className="w-[52px] h-[52px] rounded-full bg-white flex items-center justify-center shadow-[0_2px_12px_rgba(0,0,0,0.04)] border-none cursor-pointer">
                         <img src={GoogleIcon} alt="Google login" className="w-6 h-6" />
-                    </button>
+                    </motion.button>
                 </div>
 
-            </div>
+            </motion.div>
 
             {/* Footer Text */}
-            <div className="w-full flex justify-center items-center mt-auto pt-6 pb-2">
+            <motion.div variants={itemVariants} className="w-full flex justify-center items-center mt-auto pt-6 pb-2">
                 <p className="font-urbanist text-[15px] text-[#A0A0A0] m-0 tracking-tight">
                     Don't have an account? <button className="bg-transparent border-none p-0 cursor-pointer text-[#131313] font-bold">Create Account</button>
                 </p>
-            </div>
+            </motion.div>
 
-        </div>
+        </motion.div>
     );
 };
 

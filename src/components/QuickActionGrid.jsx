@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import LocationIcon from '../assets/svg/location-icon.svg';
 import QrIcon from '../assets/svg/qr-icon.svg';
 import ChargingStationIcon from '../assets/svg/charging-station-icon.svg';
 import DialIcon from '../assets/svg/dial-icon.svg';
 
-const ActionCard = ({ iconPath, title, subtitle, color, delay, path }) => {
+const ActionCard = ({ iconPath, title, subtitle, color, path }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const [isAnimating, setIsAnimating] = useState(false);
@@ -31,11 +33,18 @@ const ActionCard = ({ iconPath, title, subtitle, color, delay, path }) => {
         }, 150);
     };
 
+    const cardVariants = {
+        hidden: { opacity: 0, y: 15 },
+        visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 350, damping: 25 } }
+    };
+
     return (
-        <div
+        <motion.div
+            variants={cardVariants}
             onClick={handleClick}
-            className="bg-white rounded-[26px] px-5 py-5 h-[142px] flex flex-col justify-end relative shadow-sm transition-all duration-300 active:scale-[0.96] active:shadow-md hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] overflow-hidden cursor-pointer group"
-            style={{ animationDelay: `${delay}s` }}
+            whileHover={{ y: -4, transition: { duration: 0.2 } }}
+            whileTap={{ scale: 0.96 }}
+            className="bg-white rounded-[26px] px-5 py-5 h-[142px] flex flex-col justify-end relative shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden cursor-pointer group"
         >
             {/* Ripple Transition Overlay */}
             {isAnimating && (
@@ -63,26 +72,41 @@ const ActionCard = ({ iconPath, title, subtitle, color, delay, path }) => {
                     <ArrowUpRight className="text-[#c0c0c0] transition-transform group-hover:text-[#131313] group-hover:translate-x-0.5 group-hover:-translate-y-0.5" size={20} strokeWidth={2.2} />
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
 const QuickActionGrid = () => {
     const actions = [
-        { iconPath: LocationIcon, title: 'Find Dealer', subtitle: 'Nearby Showroom', color: '#0d0d0d', delay: 0.1, path: '/find-dealer' },
-        { iconPath: QrIcon, title: 'Booking', subtitle: 'Your Appointments', color: '#0d0d0d', delay: 0.2 },
-        { iconPath: ChargingStationIcon, title: 'Find Chargers', subtitle: 'EV Charging Nearby', color: '#0d0d0d', delay: 0.3 },
-        { iconPath: DialIcon, title: 'Emergency', subtitle: 'Immediate Help', color: '#dc2928', delay: 0.4 },
+        { iconPath: LocationIcon, title: 'Find Dealer', subtitle: 'Nearby Showroom', color: '#0d0d0d', path: '/find-dealer' },
+        { iconPath: QrIcon, title: 'Booking', subtitle: 'Your Appointments', color: '#0d0d0d' },
+        { iconPath: ChargingStationIcon, title: 'Find Chargers', subtitle: 'EV Charging Nearby', color: '#0d0d0d' },
+        { iconPath: DialIcon, title: 'Emergency', subtitle: 'Immediate Help', color: '#dc2928' },
     ];
 
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.08,
+            }
+        }
+    };
+
     return (
-        <section className="px-5 pb-2 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+        <motion.section
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="px-5 pb-2"
+        >
             <div className="grid grid-cols-2 gap-3.5">
                 {actions.map((action, index) => (
                     <ActionCard key={index} {...action} />
                 ))}
             </div>
-        </section>
+        </motion.section>
     );
 };
 

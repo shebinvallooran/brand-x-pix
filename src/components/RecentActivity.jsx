@@ -1,6 +1,8 @@
 import React from 'react';
 import SpanderIcon from '../assets/svg/spander-icon.svg';
 import CalenderIcon from '../assets/svg/calender-icon.svg';
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
 
 const ActivityItem = ({ iconPath, title, subtitle, time, isLast }) => (
     <div className={`flex items-start gap-4 py-4 ${!isLast ? 'border-b border-[#f0f0f0]' : ''}`}>
@@ -26,8 +28,13 @@ const RecentActivity = () => {
     ];
 
     return (
-        <section className="px-5 pb-[40px] mt-4 animate-fade-in-slow" style={{ animationDelay: '0.3s' }}>
-            <div className="bg-white rounded-[26px] p-5 shadow-sm">
+        <motion.section
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3, ease: 'easeOut' }}
+            className="px-5 pb-[40px] mt-4"
+        >
+            <div className="bg-white rounded-[26px] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
                 <h3 className="text-[#131313] text-[18px] font-urbanist font-bold tracking-tight mb-2 mt-1">Recent Activity</h3>
                 <div className="flex flex-col">
                     {activities.map((item, index) => (
@@ -35,7 +42,7 @@ const RecentActivity = () => {
                     ))}
                 </div>
             </div>
-        </section>
+        </motion.section>
     );
 };
 

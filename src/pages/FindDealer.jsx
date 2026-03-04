@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Mic, SlidersHorizontal, MapPin, ArrowLeft, Star } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import mapImage from '../assets/images/🌎 Map Maker_  (Standard).png';
 import dealerImage from '../assets/images/image 32.png';
 
@@ -79,16 +80,17 @@ const FindDealer = () => {
             {/* Chips */}
             <div className="pl-5 pr-5 flex items-center gap-[10px] overflow-x-auto scrollbar-hide py-1 mb-[20px]">
                 {chips.map(chip => (
-                    <button
+                    <motion.button
                         key={chip}
-                        className={`px-[18px] py-[6px] rounded-[16px] border-none text-[13px] font-urbanist font-medium cursor-pointer whitespace-nowrap transition-all duration-300 flex-shrink-0 ${activeChip === chip ? 'bg-[#0d0d0d] text-white' : 'bg-white text-[#282828] shadow-[0_2px_8px_rgba(0,0,0,0.02)]'}`}
+                        whileTap={{ scale: 0.95 }}
+                        className={`px-[18px] py-[6px] rounded-[16px] border-none text-[13px] font-urbanist font-medium cursor-pointer whitespace-nowrap transition-colors duration-300 flex-shrink-0 relative overflow-hidden ${activeChip === chip ? 'bg-[#0d0d0d] text-white' : 'bg-white text-[#282828] shadow-[0_2px_8px_rgba(0,0,0,0.02)]'}`}
                         onClick={() => setActiveChip(chip)}
                     >
                         {activeChip === chip && (
-                            <div className="absolute inset-0 bg-gradient-to-r from-[#131313] to-[#2a2a2a] -z-10" />
+                            <motion.div layoutId="dealerActiveBackground" className="absolute inset-0 bg-gradient-to-r from-[#131313] to-[#2a2a2a] -z-10" />
                         )}
                         <span className="relative z-10">{chip}</span>
-                    </button>
+                    </motion.button>
                 ))}
             </div>
 
@@ -105,9 +107,28 @@ const FindDealer = () => {
             <div className="mx-5 bg-white rounded-[24px] p-4 shadow-sm pb-5">
                 <h2 className="font-urbanist font-semibold text-[17px] text-[#131313] mb-4">4 Dealers Found</h2>
 
-                <div className="flex flex-col gap-4">
+                <motion.div
+                    className="flex flex-col gap-4"
+                    variants={{
+                        hidden: { opacity: 0 },
+                        show: {
+                            opacity: 1,
+                            transition: { staggerChildren: 0.08 }
+                        }
+                    }}
+                    initial="hidden"
+                    animate="show"
+                >
                     {dealers.map((dealer) => (
-                        <div key={dealer.id} className="w-full rounded-[20px] border border-[#F0F0F0] p-3 flex gap-3 shadow-sm bg-white">
+                        <motion.div
+                            key={dealer.id}
+                            variants={{
+                                hidden: { opacity: 0, x: -10 },
+                                show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 300, damping: 25 } }
+                            }}
+                            whileTap={{ scale: 0.98 }}
+                            className="w-full rounded-[20px] border border-[#F0F0F0] p-3 flex gap-3 shadow-sm bg-white cursor-pointer"
+                        >
                             <img src={dealerImage} alt={dealer.name} className="w-[86px] h-[86px] object-cover rounded-[14px] shrink-0" />
 
                             <div className="flex flex-col flex-1 py-0 min-w-0">
@@ -131,9 +152,9 @@ const FindDealer = () => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </div>
     );

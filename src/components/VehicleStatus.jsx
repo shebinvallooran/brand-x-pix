@@ -1,6 +1,8 @@
 import React from 'react';
 import { Clock } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
+import { motion } from 'framer-motion';
 
 const VehicleStatus = () => {
     const location = useLocation();
@@ -10,8 +12,13 @@ const VehicleStatus = () => {
     const vehicleName = query === 'cadillac' ? 'ESCALADE-V' : 'Range Rover (L405)';
 
     return (
-        <section className="px-5 pb-2 mt-4 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            <div className="bg-white rounded-[26px] p-5 flex flex-col shadow-sm relative">
+        <motion.section
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+            className="px-5 pb-2 mt-4"
+        >
+            <div className="bg-white rounded-[26px] p-5 flex flex-col shadow-[0_2px_8px_rgba(0,0,0,0.04)] relative">
                 <div className="flex justify-between items-center mb-5">
                     <h3 className="text-black text-[16px] font-urbanist font-bold m-0 tracking-tight">My {vehicleName}</h3>
                     <div className="bg-[#fff1e5] px-2.5 py-1 rounded-full flex gap-1 items-center">
@@ -45,7 +52,7 @@ const VehicleStatus = () => {
                     </div>
                 </div>
             </div>
-        </section>
+        </motion.section>
     );
 };
 
