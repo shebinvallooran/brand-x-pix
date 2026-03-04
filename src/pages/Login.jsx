@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
@@ -19,7 +18,7 @@ const Login = () => {
     const [error, setError] = useState('');
 
     const handleLogin = () => {
-        if (email === 'shebinvallooran@gmail.com' && password === '12345612') {
+        if (email.trim().toLowerCase() === 'demo@gmail.com' && password === '12345612') {
             setError('');
             localStorage.setItem('isAuthenticated', 'true');
             navigate('/home');
@@ -49,18 +48,12 @@ const Login = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="w-full flex flex-col px-6 pt-[50px] pb-10 flex-1 min-h-[100dvh]"
+            className="w-full flex flex-col px-6 pt-6 pb-10 flex-1 min-h-[100dvh]"
         >
             {/* Top Header */}
-            <motion.div variants={itemVariants} className="flex justify-between items-center w-full mb-12">
-                <button
-                    onClick={() => navigate('/home')}
-                    className="w-10 h-10 flex items-center justify-start p-0 bg-transparent border-none cursor-pointer hover:bg-black/5 rounded-full transition-colors"
-                >
-                    <ArrowLeft strokeWidth={1.5} className="w-6 h-6 text-[#131313]" />
-                </button>
+            <motion.div variants={itemVariants} className="flex justify-start items-center w-full mb-12">
                 {/* Brand Logo - placeholder using a stylised script font representation */}
-                <div className="font-['Brush_Script_MT',cursive] italic text-[28px] font-semibold text-[#131313] tracking-tight mr-2">Brandx</div>
+                <div className="font-['Brush_Script_MT',cursive] italic text-[28px] font-semibold text-[#131313] tracking-tight">Brandx</div>
             </motion.div>
 
             {/* Welcome Setup */}
